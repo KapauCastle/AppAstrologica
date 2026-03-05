@@ -5,31 +5,37 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="1000"
-             Background="#F3F4F6" FontFamily="Segoe UI"
+             Background="#111827" FontFamily="Palatino Linotype"
              Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="PrimaryColor" Color="#2563EB"/>
+        <SolidColorBrush x:Key="BarbiePink" Color="#E21884"/>
+        <SolidColorBrush x:Key="GothPurple" Color="#2D1B36"/>
+        <SolidColorBrush x:Key="MysticGold" Color="#D4AF37"/>
 
-        <Style x:Key="BotonPrimario" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+        <Style x:Key="BotonMistico" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BarbiePink}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#F9A8D4"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="8" 
+                                CornerRadius="20" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#1D4ED8"/>
+                                <Setter Property="Background" Value="#BE185D"/>
+                                <Setter Property="BorderBrush" Value="White"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -37,17 +43,18 @@
             </Setter>
         </Style>
 
-        <Style x:Key="CajaBusqueda" TargetType="TextBox">
+        <Style x:Key="CajaBusquedaGoth" TargetType="TextBox">
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderBrush" Value="#E9D5FF"/>
+            <Setter Property="Background" Value="#FDFCFE"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="White" 
-                                CornerRadius="8" 
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 BorderBrush="{TemplateBinding BorderBrush}">
                             <ScrollViewer x:Name="PART_ContentHost"/>
@@ -64,7 +71,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Background="White" Padding="30,20" BorderThickness="0,0,0,1" BorderBrush="#E5E7EB">
+        <Border Grid.Row="0" Background="{StaticResource GothPurple}" Padding="30,20" BorderThickness="0,0,0,3" BorderBrush="{StaticResource BarbiePink}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -72,31 +79,33 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Background="Transparent" Width="50" Height="50" CornerRadius="8" Margin="0,0,15,0">
-                        <Image Source="pack://application:,,,/assets/logo_bebe.png" 
-       RenderOptions.BitmapScalingMode="HighQuality"/>
+                    <Border Background="White" Width="55" Height="55" CornerRadius="27" Margin="0,0,15,0">
+                        <Image Source="pack://application:,,,/assets/logo_bebe.png" RenderOptions.BitmapScalingMode="HighQuality" Margin="5"/>
                     </Border>
 
-                    <TextBlock Text="Consultorio Dra. Reynoso" FontSize="22" FontWeight="Bold" Foreground="#1F2937" VerticalAlignment="Center"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Sesiones NCR" FontSize="26" FontWeight="Bold" Foreground="{StaticResource BarbiePink}"/>
+                        <TextBlock Text="✦ Expedientes del Universo ✦" FontSize="12" Foreground="{StaticResource MysticGold}" FontStyle="Italic"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="Bienvenida, Doctora" VerticalAlignment="Center" Foreground="#6B7280" Margin="0,0,15,0" FontSize="14"/>
-                    <Border Width="40" Height="40" CornerRadius="20" Background="#E0E7FF" BorderBrush="#C7D2FE" BorderThickness="1">
+                    <TextBlock Text="Bienvenida" VerticalAlignment="Center" Foreground="White" Margin="0,0,15,0" FontSize="15" FontWeight="SemiBold"/>
+                    <Border Width="45" Height="45" CornerRadius="22" Background="#E21884" BorderBrush="{StaticResource MysticGold}" BorderThickness="2">
                         <Path Data="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" 
-                               Fill="{StaticResource PrimaryColor}" Stretch="Uniform" Margin="8"/>
+                               Fill="White" Stretch="Uniform" Margin="10"/>
                     </Border>
                 </StackPanel>
             </Grid>
         </Border>
 
         <Grid Grid.Row="1" Margin="30">
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.05" Color="Black"/>
-            </Grid.Effect>
+            <Border Background="White" CornerRadius="25" Padding="25">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.3" Color="#E21884"/>
+                </Border.Effect>
 
-            <Border Background="White" CornerRadius="12">
-                <Grid Margin="30">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -110,23 +119,22 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel>
-                            <TextBlock Text="Expedientes de Pacientes" FontSize="20" FontWeight="Bold" Foreground="#111827"/>
-                            <TextBlock Text="Gestiona y consulta el historial médico." FontSize="14" Foreground="#6B7280" Margin="0,5,0,0"/>
+                            <TextBlock Text="Historial de Visitas" FontSize="22" FontWeight="Bold" Foreground="{StaticResource GothPurple}"/>
+                            <Rectangle Height="2" Fill="{StaticResource BarbiePink}" HorizontalAlignment="Left" Width="100" Margin="0,5,0,0"/>
                         </StackPanel>
 
-                        <Grid Grid.Column="1" Width="300" Margin="0,0,20,0" VerticalAlignment="Center">
-                            <TextBox Style="{StaticResource CajaBusqueda}" 
+                        <Grid Grid.Column="1" Width="320" Margin="0,0,20,0" VerticalAlignment="Center">
+                            <TextBox Style="{StaticResource CajaBusquedaGoth}" 
                                      x:Name="txtBuscar"
                                      TextChanged="searchUser"
-                                     VerticalContentAlignment="Center"
                                      Padding="35,10,10,10"/>
 
                             <Path Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" 
-                                  Fill="#9CA3AF" Width="18" Height="18" Stretch="Uniform" 
-                                  HorizontalAlignment="Left" Margin="10,0,0,0" IsHitTestVisible="False"/>
+                                  Fill="{StaticResource BarbiePink}" Width="18" Height="18" Stretch="Uniform" 
+                                  HorizontalAlignment="Left" Margin="12,0,0,0" IsHitTestVisible="False"/>
 
-                            <TextBlock Text="Buscar paciente..." Foreground="#9CA3AF" 
-                                       VerticalAlignment="Center" Margin="35,0,0,0" IsHitTestVisible="False">
+                            <TextBlock Text="Buscar nombre..." Foreground="#9CA3AF" 
+                                       VerticalAlignment="Center" Margin="40,0,0,0" IsHitTestVisible="False" FontStyle="Italic">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -140,15 +148,14 @@
                             </TextBlock>
                         </Grid>
 
-                        <Button Grid.Column="2" 
-                                Style="{StaticResource BotonPrimario}"
-                                Click="openRegisterModal">
+                        <Button Grid.Column="1" 
+                                Style="{StaticResource BotonMistico}"
+                                Click="openRegisterModal" Grid.ColumnSpan="2" Margin="340,1,0,-1">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="+" Margin="0,0,8,0" FontSize="16" FontWeight="Bold"/>
-                                <TextBlock Text="Nuevo Paciente"/>
+                                <TextBlock Text="✧" Margin="0,0,8,0" FontSize="18" VerticalAlignment="Center"/>
+                                <TextBlock Text="Nueva Visita" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-
                     </Grid>
 
                     <ListView Grid.Row="1" x:Name="PatientsList" 
@@ -160,18 +167,18 @@
                             <Style TargetType="ListViewItem">
                                 <Setter Property="Cursor" Value="Hand"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="Margin" Value="0,0,0,10"/>
-                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0,0,0,12"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="ListViewItem">
-                                            <Border x:Name="bdr" Background="White" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="8" Padding="15">
+                                            <Border x:Name="bdr" Background="White" BorderBrush="#F3E8FF" BorderThickness="1.5" CornerRadius="15" Padding="15">
                                                 <ContentPresenter/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="bdr" Property="Background" Value="#F9FAFB"/>
-                                                    <Setter TargetName="bdr" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                                    <Setter TargetName="bdr" Property="Background" Value="#FDF2F8"/>
+                                                    <Setter TargetName="bdr" Property="BorderBrush" Value="{StaticResource BarbiePink}"/>
+                                                    <Setter TargetName="bdr" Property="BorderThickness" Value="2"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
@@ -189,32 +196,27 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Border Grid.Column="0" Width="50" Height="50" CornerRadius="25" Background="#DBEAFE" Margin="0,0,15,0">
-                                        <TextBlock Text="{Binding name}" 
-                                                   MaxHeight="26" TextTrimming="CharacterEllipsis" Width="30"
+                                    <Border Grid.Column="0" Width="55" Height="55" CornerRadius="27" Background="{StaticResource GothPurple}" Margin="0,0,15,0">
+                                        <TextBlock Text="{Binding name[0]}" 
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                   FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}"/>
+                                                   FontSize="22" FontWeight="Bold" Foreground="{StaticResource BarbiePink}"/>
                                     </Border>
 
                                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding name}" FontSize="16" FontWeight="SemiBold" Foreground="#111827"/>
-
+                                        <TextBlock Text="{Binding name}" FontSize="18" FontWeight="Bold" Foreground="{StaticResource GothPurple}"/>
                                         <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
-                                            <TextBlock Text="Total Consultas: " Foreground="#6B7280" FontSize="13"/>
-                                            <TextBlock Text="{Binding total_consulation}" Foreground="#6B7280" FontSize="13" FontWeight="Bold" Margin="0,0,15,0"/>
-
-                                            <TextBlock Text="Última Visita: " Foreground="#6B7280" FontSize="13"/>
-                                            <TextBlock Text="{Binding ultimateDate}" Foreground="#6B7280" FontSize="13"/>
+                                            <TextBlock Text="Visitas: " Foreground="#6B7280" FontSize="13" FontStyle="Italic"/>
+                                            <TextBlock Text="{Binding total_consulation}" Foreground="{StaticResource BarbiePink}" FontSize="13" FontWeight="Bold" Margin="0,0,15,0"/>
+                                            <TextBlock Text="Último encuentro: " Foreground="#6B7280" FontSize="13" FontStyle="Italic"/>
+                                            <TextBlock Text="{Binding ultimateDate}" Foreground="#111827" FontSize="13" FontWeight="SemiBold"/>
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <Path Grid.Column="2" Data="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" 
-                                          Fill="#9CA3AF" Height="15" Stretch="Uniform"/>
+                                    <TextBlock Grid.Column="2" Text="🌙" FontSize="20" Foreground="{StaticResource MysticGold}" VerticalAlignment="Center" Opacity="0.6"/>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
                 </Grid>
             </Border>
         </Grid>

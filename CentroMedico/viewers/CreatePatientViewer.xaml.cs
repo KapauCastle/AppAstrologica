@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using CentroMedico.Database;
 using CentroMedico.models;
 
@@ -19,121 +8,125 @@ namespace CentroMedico.viewers
 {
     public partial class CreatePatientViewer : Window
     {
-        public event EventHandler PatientCreated;
+        // El signo ? evita la advertencia CS8618 (valor nulo)
+        public event EventHandler? PatientCreated;
+
+        private readonly string[] signosList = { "Aries ♈", "Tauro ♉", "Géminis ♊", "Cáncer ♋", "Leo ♌", "Virgo ♍",
+                                                "Libra ♎", "Escorpio ♏", "Sagitario ♐", "Capricornio ♑", "Acuario ♒", "Piscis ♓" };
 
         public CreatePatientViewer()
         {
             InitializeComponent();
+            LoadFormLists();
             dobInput.DisplayDateEnd = DateTime.Now;
         }
 
-        private void OnlyNumbers_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void LoadFormLists()
         {
-            Regex regex = new Regex("[^0-9.]+");
-            if (regex.IsMatch(e.Text))
-            {
-                e.Handled = true;
-                return;
-            }
+            // Llenar Horas
+            for (int i = 1; i <= 12; i++) hourPicker.Items.Add(i.ToString("D2"));
+            hourPicker.SelectedIndex = 11;
 
-            if (e.Text == "." && ((TextBox)sender).Text.Contains("."))
+            // Llenar Minutos
+            for (int i = 0; i < 60; i += 5) minutePicker.Items.Add(i.ToString("D2"));
+            minutePicker.SelectedIndex = 0;
+
+            // Llenar Signos
+            foreach (var s in signosList)
             {
-                e.Handled = true;
+                ascSignPicker.Items.Add(s);
+                moonSignPicker.Items.Add(s);
             }
         }
 
-        private void closeModal(object sender, RoutedEventArgs e)
+        private void CalculateData(object sender, SelectionChangedEventArgs e)
         {
-            this.Close();
+            if (dobInput.SelectedDate == null) return;
+            DateTime birth = dobInput.SelectedDate.Value;
+
+            int age = DateTime.Today.Year - birth.Year;
+            if (birth > DateTime.Today.AddYears(-age)) age--;
+            ageResultLabel.Text = $"{age} años";
+
+            sunSignResult.Text = GetZodiacSign(birth.Day, birth.Month);
+        }
+
+        private string GetZodiacSign(int day, int month)
+        {
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "Aries ♈";
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "Tauro ♉";
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "Géminis ♊";
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "Cáncer ♋";
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "Leo ♌";
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "Virgo ♍";
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "Libra ♎";
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "Escorpio ♏";
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "Sagitario ♐";
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return "Capricornio ♑";
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Acuario ♒";
+            return "Piscis ♓";
         }
 
         private void saveData(object sender, RoutedEventArgs e)
         {
-            string patientName = fullNameInput.Text;
-            string typePatient = patientTypeInput.Text;
-            string weight = weightInput.Text;
-            string height = heightInput.Text;
-            string history = historyInput.Text;
-            string typeHistory = typeHistoryInput.Text;
-            string apgar_left = apgar1Input.Text;
-            string apgar_right = apgar5Input.Text;
-            string BloodType = bloodTypeInput.Text;
-
-            DateTime? birthdate = dobInput.SelectedDate.HasValue ? dobInput.SelectedDate.Value : (DateTime?)null;
-            typePatient = string.IsNullOrEmpty(typePatient) ? "General" : typePatient;
-
-            bool validation = ChampsValidation(patientName, weight, height, birthdate);
-
-            if (validation)
+            if (string.IsNullOrWhiteSpace(fullNameInput.Text) || dobInput.SelectedDate == null)
             {
+                MessageBox.Show("Por favor, llena los campos de nombre y fecha.");
+                return;
+            }
+
+            try
+            {
+                // Captura de datos de ComboBoxes
+                string birthTime = $"{hourPicker.SelectedItem}:{minutePicker.SelectedItem} {((ComboBoxItem)ampmPicker.SelectedItem).Content}";
+                string gender = (genderPicker.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "No especificado";
+                string maritalStatus = (maritalStatusPicker.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "No especificado";
+
                 using (var db = new ConsultorioContext())
                 {
                     var newPatient = new patientModel
                     {
-                        name = patientName,
-                        type_patient = typePatient,
-                        weight = float.Parse(weight),
-                        height = float.Parse(height),
-                        blood_type = BloodType,
-                        birthdate = birthdate.Value,
-                        apgar = $"{apgar_left} de {apgar_right}",
+                        name = fullNameInput.Text.ToUpper(),
+                        birthdate = dobInput.SelectedDate.Value,
+
+                        // Nota: Asegúrate de que tu clase 'patientModel' tenga estos campos.
+                        // Si te marca error aquí, es porque debes agregarlos a tu clase patientModel.cs
+                        /*
+                        gender = gender,
+                        marital_status = maritalStatus,
+                        education = educationInput.Text,
+                        religion = religionInput.Text,
+                        occupation = occupationInput.Text,
+                        socioeconomic_level = socioeconomicInput.Text,
+                        address = addressInput.Text,
+                        sun_sign = sunSignResult.Text,
+                        moon_sign = moonSignPicker.SelectedItem?.ToString(),
+                        asc_sign = ascSignPicker.SelectedItem?.ToString(),
+                        birth_time = birthTime
+                        */
                     };
+
                     db.Patients.Add(newPatient);
                     db.SaveChanges();
-
-                    if (!string.IsNullOrWhiteSpace(history) && !string.IsNullOrWhiteSpace(typeHistory))
-                    {
-                        var newHistory = new historyModel
-                        {
-                            patient_id = newPatient.id,
-                            history = history,
-                            name = newPatient.name,
-                            type_history = typeHistory
-                        };
-                        db.Histories.Add(newHistory);
-                        db.SaveChanges();
-                    }
                 }
-                MessageBox.Show("Paciente creado exitosamente.");
+
+                MessageBox.Show("Registro manifestado con éxito ✨");
                 PatientCreated?.Invoke(this, EventArgs.Empty);
                 this.Close();
             }
-            else
+            catch (Exception ex)
             {
-                return;
+                MessageBox.Show("Error al guardar: " + ex.Message);
             }
         }
 
-        public static bool ChampsValidation(string name, string weight, string height, DateTime? birthDate)
-        {
-            bool validation = false;
-            if (string.IsNullOrEmpty(name))
-            {
-                MessageBox.Show("El campo de nombre es obligatorio.");
-            }
-            else if (string.IsNullOrEmpty(weight))
-            {
-                MessageBox.Show("El campo de peso es obligatorio.");
-            }
-            else if (string.IsNullOrEmpty(height))
-            {
-                MessageBox.Show("El campo de altura es obligatorio.");
-            } 
-            else if (birthDate == null)
-            {
-                MessageBox.Show("El campo de fecha de nacimiento es obligatorio.");
-            }
-            else
-            {
-                validation = true;
-            }
-            return validation;
-        }
         private void fullNameInput_TextChanged(object sender, TextChangedEventArgs e)
         {
+            int caretIndex = fullNameInput.SelectionStart;
             fullNameInput.Text = fullNameInput.Text.ToUpper();
-            fullNameInput.SelectionStart = fullNameInput.Text.Length;
+            fullNameInput.SelectionStart = caretIndex;
         }
 
+        private void closeModal(object sender, RoutedEventArgs e) => this.Close();
     }
 }

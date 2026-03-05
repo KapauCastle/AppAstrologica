@@ -23,15 +23,28 @@ namespace CentroMedico.viewers
 
         private void LoadVisualDesign()
         {
+            if (Patient == null) return;
+
+            // Datos de Identidad (Letras Grandes)
             txtNombrePaciente.Text = Patient.name;
-            txtDatosBasicos.Text = $"Edad: {Patient.age} años, {Patient.age_mounth} meses    •    F. Nacim: {Patient.birthdate:dd/MM/yyyy}";
+            txtDatosBasicos.Text = $"F. Nacim: {Patient.birthdate:dd/MM/yyyy}";
 
+            // Sincronización de peso y altura
             UpdateWeightAndHeight();
-            txtUltimosDatos.Text = $"Ultimo Peso: {Patient.weight} kg    •    Ultima Altura: {Patient.height} cm";
+            txtUltimosDatos.Text = $"Peso: {Patient.weight} kg  •  Altura: {Patient.height} cm";
 
-            txtTipoPaciente.Text = string.IsNullOrEmpty(Patient.type_patient) ? "General" : Patient.type_patient;
-            txtApgar.Text = string.IsNullOrEmpty(Patient.apgar) ? "Indefinido" : Patient.apgar;
-            txtTipoSangre.Text = string.IsNullOrEmpty(Patient.blood_type) ? "Por definir" : Patient.blood_type;
+            // Energía del Consultante
+            txtTipoPaciente.Text = string.IsNullOrEmpty(Patient.type_patient) ? "ESTÁNDAR" : Patient.type_patient;
+
+            // --- SECCIÓN ASTRAL (COMENTADA HASTA ACTUALIZAR BD) ---
+            // lblSol.Text = Patient.sun_sign ?? "--";
+            // lblAsc.Text = Patient.ascendant ?? "--";
+            // lblLuna.Text = Patient.moon_sign ?? "--";
+
+            // Por ahora, dejamos valores fijos para que no se vea vacío
+            lblSol.Text = "--";
+            lblAsc.Text = "--";
+            lblLuna.Text = "--";
 
             try
             {
@@ -48,17 +61,13 @@ namespace CentroMedico.viewers
                 }
 
                 listHistorial.ItemsSource = consulationList;
-                listHistories.ItemsSource = historyList; 
+                listHistories.ItemsSource = historyList;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar datos: {ex.Message}");
+                // Mensaje con estilo místico pero útil para ingeniería
+                MessageBox.Show($"Error al canalizar el Akasha: {ex.Message}");
             }
-        }
-
-        private void BtnRegresar_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
 
         private void ReloadPatientData()
@@ -67,73 +76,21 @@ namespace CentroMedico.viewers
             {
                 using (var db = new ConsultorioContext())
                 {
-                    var updatedPatient = db.Patients.Find(Patient.id);
-                    if (updatedPatient != null)
+                    var updated = db.Patients.Find(Patient.id);
+                    if (updated != null)
                     {
-                        Patient.name = updatedPatient.name;
-                        Patient.type_patient = updatedPatient.type_patient;
-                        Patient.birthdate = updatedPatient.birthdate;
-                        Patient.blood_type = updatedPatient.blood_type;
-                        Patient.apgar = updatedPatient.apgar;
-                        Patient.age = updatedPatient.age;
-                        Patient.age_mounth = updatedPatient.age_mounth;
-                        Patient.weight = updatedPatient.weight;
-                        Patient.height = updatedPatient.height;
+                        Patient.name = updated.name;
+                        Patient.type_patient = updated.type_patient;
+                        Patient.birthdate = updated.birthdate;
+                        Patient.weight = updated.weight;
+                        Patient.height = updated.height;
+                        // Aquí también comentarás los campos astrales al recargar
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al recargar datos del paciente: {ex.Message}");
-            }
-        }
-
-        private void BtnEditar_Click(object sender, RoutedEventArgs e)
-        {
-            UpdatePatientViewer updateModal = new UpdatePatientViewer(Patient);
-            updateModal.PatientUpdated += (s, args) =>
-            {
-                ReloadPatientData();
-                LoadVisualDesign();
-            };
-            updateModal.ShowDialog();
-        }
-
-        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBoxResult result = MessageBox.Show(
-                "¿Seguro que deseas eliminar al paciente? Se eliminarán todas sus consultas y antecedentes.",
-                "Confirmar Eliminación",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning);
-
-            if (result == MessageBoxResult.Yes)
-            {
-                try
-                {
-                    using (var db = new ConsultorioContext())
-                    {
-                        var patientToDelete = db.Patients.Find(Patient.id);
-
-                        var relatedConsultations = db.Consulations.Where(c => c.patient_id == Patient.id);
-                        db.Consulations.RemoveRange(relatedConsultations);
-
-                        var relatedHistory = db.Histories.Where(h => h.patient_id == Patient.id);
-                        db.Histories.RemoveRange(relatedHistory);
-
-                        if (patientToDelete != null)
-                        {
-                            db.Patients.Remove(patientToDelete);
-                            db.SaveChanges();
-                            MessageBox.Show("Paciente eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-                            this.Close();
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error al eliminar datos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                MessageBox.Show($"Error al sincronizar expediente: {ex.Message}");
             }
         }
 
@@ -143,168 +100,61 @@ namespace CentroMedico.viewers
             {
                 using (var db = new ConsultorioContext())
                 {
-                    var consultations = db.Consulations
+                    var lastConsult = db.Consulations
                         .Where(c => c.patient_id == Patient.id)
                         .OrderByDescending(c => c.date)
                         .FirstOrDefault();
 
-                    if (consultations != null)
+                    if (lastConsult != null)
                     {
-                        Patient.weight = consultations.weight;
-                        Patient.height = consultations.height;
-
-                        var patientToUpdate = db.Patients.Find(Patient.id);
-                        if (patientToUpdate != null)
+                        var patientDb = db.Patients.Find(Patient.id);
+                        if (patientDb != null)
                         {
-                            patientToUpdate.weight = consultations.weight;
-                            patientToUpdate.height = consultations.height;
+                            patientDb.weight = lastConsult.weight;
+                            patientDb.height = lastConsult.height;
                             db.SaveChanges();
+                            Patient.weight = lastConsult.weight;
+                            Patient.height = lastConsult.height;
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al actualizar peso y altura: {ex.Message}");
-            }
+            catch { /* Ignorar errores de actualización automática */ }
         }
 
-        private static List<consulationModel> ConsulationListObtains(int patientId)
+        private void BtnRegresar_Click(object sender, RoutedEventArgs e) => this.Close();
+
+        private void BtnEditar_Click(object sender, RoutedEventArgs e)
         {
-            try
+            UpdatePatientViewer updateModal = new UpdatePatientViewer(Patient);
+            updateModal.PatientUpdated += (s, args) => { ReloadPatientData(); LoadVisualDesign(); };
+            updateModal.ShowDialog();
+        }
+
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("¿Desvanecer este expediente?", "Confirmar", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 using (var db = new ConsultorioContext())
                 {
-                    return db.Consulations
-                        .Where(c => c.patient_id == patientId)
-                        .OrderByDescending(c => c.date)
-                        .ToList();
+                    var p = db.Patients.Find(Patient.id);
+                    if (p != null) { db.Patients.Remove(p); db.SaveChanges(); this.Close(); }
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al obtener las consultas: {ex.Message}");
-                return new List<consulationModel>();
             }
         }
 
-        private void BtnNuevaNota_Click(object sender, RoutedEventArgs e)
+        private void BtnSeguimiento_Click(object sender, RoutedEventArgs e)
         {
             CreateMedicalNote notaWindow = new CreateMedicalNote(Patient.id);
-
-            notaWindow.NoteSaved += (s, args) =>
-            {
-                LoadVisualDesign();
-                ReloadPatientData();
-            };
-
+            notaWindow.NoteSaved += (s, args) => LoadVisualDesign();
             notaWindow.ShowDialog();
         }
 
-        private void btnEditConsultation_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is consulationModel consultation)
-            {
-                CreateMedicalNote editWindow = new CreateMedicalNote(Patient.id, consultation);
-
-                editWindow.NoteSaved += (s, args) =>
-                {
-                    LoadVisualDesign();
-                    ReloadPatientData();
-                };
-
-                editWindow.ShowDialog();
-            }
-        }
-
-        private void btnDeleteConsultation_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is consulationModel consultation)
-            {
-                MessageBoxResult result = MessageBox.Show(
-                    $"¿Seguro que deseas eliminar la consulta del {consultation.date:dd/MM/yyyy}?",
-                    "Confirmar Eliminación",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        using (var db = new ConsultorioContext())
-                        {
-                            var consultationToDelete = db.Consulations.Find(consultation.id);
-                            if (consultationToDelete != null)
-                            {
-                                db.Consulations.Remove(consultationToDelete);
-                                db.SaveChanges();
-
-                                MessageBox.Show("Consulta eliminada correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                                LoadVisualDesign();
-                                ReloadPatientData();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error al eliminar consulta: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
-        }
-
-        private void BtnAgregarAntecedente_Click(object sender, RoutedEventArgs e)
+        private void BtnHistopatografia_Click(object sender, RoutedEventArgs e)
         {
             CreateHistoryViewer historyWindow = new CreateHistoryViewer(Patient.id, Patient.name);
-
-            historyWindow.HistorySaved += (s, args) =>
-            {
-                LoadVisualDesign();
-            };
-
+            historyWindow.HistorySaved += (s, args) => LoadVisualDesign();
             historyWindow.ShowDialog();
-        }
-
-        private void btnDeleteHistory_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button && button.Tag is historyModel historyItem)
-            {
-                MessageBoxResult result = MessageBox.Show(
-                    $"¿Seguro que deseas eliminar el antecedente de tipo '{historyItem.type_history}'?",
-                    "Confirmar Eliminación",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        using (var db = new ConsultorioContext())
-                        {
-                            var historyToDelete = db.Histories.Find(historyItem.id);
-
-                            if (historyToDelete != null)
-                            {
-                                db.Histories.Remove(historyToDelete);
-                                db.SaveChanges();
-
-                                MessageBox.Show("Antecedente eliminado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                                LoadVisualDesign();
-                            }
-                            else
-                            {
-                                MessageBox.Show("No se encontró el antecedente en la base de datos.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error al eliminar antecedente: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
         }
     }
 }
