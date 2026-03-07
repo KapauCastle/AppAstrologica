@@ -66,10 +66,10 @@
 					<ColumnDefinition Width="Auto"/>
 				</Grid.ColumnDefinitions>
 				<StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-					<TextBlock Text="Sesiones NCR" Foreground="{StaticResource BarbiePink}" FontSize="24" FontWeight="Bold"/>
+					<TextBlock Text="Sesiones NCR" Foreground="{StaticResource BarbiePink}" FontSize="26" FontWeight="Bold"/>
 				</StackPanel>
 				<Button Grid.Column="1" Click="BtnRegresar_Click" Background="Transparent" BorderThickness="0" Cursor="Hand">
-					<TextBlock Text="Volver al Inicio" Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+					<TextBlock Text="Volver al Inicio" Foreground="White" FontSize="17" FontWeight="SemiBold"/>
 				</Button>
 			</Grid>
 		</Border>
@@ -84,26 +84,26 @@
 								<ColumnDefinition Width="Auto"/>
 							</Grid.ColumnDefinitions>
 							<StackPanel>
-								<TextBlock x:Name="txtNombrePaciente" Text="CARGANDO..." FontSize="36" FontWeight="Bold" Foreground="{StaticResource GothPurple}" Margin="0,0,0,15"/>
+								<TextBlock x:Name="txtNombrePaciente" Text="CARGANDO..." FontSize="38" FontWeight="Bold" Foreground="{StaticResource GothPurple}" Margin="0,0,0,15"/>
 
 								<WrapPanel>
 									<Border Style="{StaticResource DataTag}" Background="{StaticResource SoftLavender}">
-										<TextBlock x:Name="txtDatosBasicos" Text="📅 F. Nacim: --/--/--" Foreground="#6B21A8" FontSize="15" FontWeight="SemiBold"/>
+										<TextBlock x:Name="txtDatosBasicos" Text="📅 F. Nacim: --/--/--" Foreground="#6B21A8" FontSize="16" FontWeight="SemiBold"/>
 									</Border>
 									<Border Style="{StaticResource DataTag}">
-										<TextBlock x:Name="txtGenero" Text="⚧ Género: --" Foreground="#374151" FontSize="15"/>
+										<TextBlock x:Name="txtGenero" Text="⚧ Género: --" Foreground="#374151" FontSize="16"/>
 									</Border>
 									<Border Style="{StaticResource DataTag}">
-										<TextBlock x:Name="txtEstadoCivil" Text="💍 Estado Civil: --" Foreground="#374151" FontSize="15"/>
+										<TextBlock x:Name="txtEstadoCivil" Text="💍 Estado Civil: --" Foreground="#374151" FontSize="16"/>
 									</Border>
 									<Border Style="{StaticResource DataTag}">
-										<TextBlock x:Name="txtOcupacion" Text="⚒️ Ocupación: --" Foreground="#374151" FontSize="15"/>
+										<TextBlock x:Name="txtOcupacion" Text="⚒️ Ocupación: --" Foreground="#374151" FontSize="16"/>
 									</Border>
 									<Border Style="{StaticResource DataTag}">
-										<TextBlock x:Name="txtEscolaridad" Text="📚 Escolaridad: --" Foreground="#374151" FontSize="15"/>
+										<TextBlock x:Name="txtEscolaridad" Text="📚 Escolaridad: --" Foreground="#374151" FontSize="16"/>
 									</Border>
 									<Border Style="{StaticResource DataTag}">
-										<TextBlock x:Name="txtReligion" Text="🕯️ Religión: --" Foreground="#374151" FontSize="15"/>
+										<TextBlock x:Name="txtReligion" Text="🕯️ Religión: --" Foreground="#374151" FontSize="16"/>
 									</Border>
 
 									<TextBlock x:Name="txtUltimosDatos" Visibility="Collapsed"/>
@@ -124,55 +124,55 @@
 						<Separator Margin="0,30" Background="#F3E8FF"/>
 
 						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,35">
-							<Border Background="#FFFBEB" CornerRadius="15" Padding="15,10" Margin="0,0,15,0" BorderBrush="{StaticResource MysticGold}" BorderThickness="1.5" Width="155">
+							<Border Background="#FFFBEB" CornerRadius="16" Padding="18,12" Margin="0,0,18,0" BorderBrush="{StaticResource MysticGold}" BorderThickness="1.8" Width="165">
 								<StackPanel HorizontalAlignment="Center">
-									<TextBlock Text="SOL ☀️" FontSize="10" FontWeight="Bold" Foreground="#B45309" HorizontalAlignment="Center" Margin="0,0,0,3"/>
-									<TextBlock x:Name="lblSol" Text="--" FontSize="18" FontWeight="Bold" Foreground="{StaticResource GothPurple}" HorizontalAlignment="Center"/>
+									<TextBlock Text="SOL ☀️" FontSize="11" FontWeight="Bold" Foreground="#B45309" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+									<TextBlock x:Name="lblSol" Text="--" FontSize="19" FontWeight="Bold" Foreground="{StaticResource GothPurple}" HorizontalAlignment="Center"/>
 								</StackPanel>
 							</Border>
-							<Border Background="#F5F3FF" CornerRadius="15" Padding="15,10" Margin="0,0,15,0" BorderBrush="#8B5CF6" BorderThickness="1.5" Width="155">
+							<Border Background="#F5F3FF" CornerRadius="16" Padding="18,12" Margin="0,0,18,0" BorderBrush="#8B5CF6" BorderThickness="1.8" Width="165">
 								<StackPanel HorizontalAlignment="Center">
-									<TextBlock Text="ASCENDENTE ✨" FontSize="10" FontWeight="Bold" Foreground="#5B21B6" HorizontalAlignment="Center" Margin="0,0,0,3"/>
-									<TextBlock x:Name="lblAsc" Text="--" FontSize="18" FontWeight="Bold" Foreground="{StaticResource GothPurple}" HorizontalAlignment="Center"/>
+									<TextBlock Text="ASCENDENTE ✨" FontSize="11" FontWeight="Bold" Foreground="#5B21B6" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+									<TextBlock x:Name="lblAsc" Text="--" FontSize="19" FontWeight="Bold" Foreground="{StaticResource GothPurple}" HorizontalAlignment="Center"/>
 								</StackPanel>
 							</Border>
-							<Border Background="#FDF2F8" CornerRadius="15" Padding="15,10" BorderBrush="{StaticResource BarbiePink}" BorderThickness="1.5" Width="155">
+							<Border Background="#FDF2F8" CornerRadius="16" Padding="18,12" BorderBrush="{StaticResource BarbiePink}" BorderThickness="1.8" Width="165">
 								<StackPanel HorizontalAlignment="Center">
-									<TextBlock Text="LUNA 🌙" FontSize="10" FontWeight="Bold" Foreground="#BE185D" HorizontalAlignment="Center" Margin="0,0,0,3"/>
-									<TextBlock x:Name="lblLuna" Text="--" FontSize="18" FontWeight="Bold" Foreground="{StaticResource GothPurple}" HorizontalAlignment="Center"/>
+									<TextBlock Text="LUNA 🌙" FontSize="11" FontWeight="Bold" Foreground="#BE185D" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+									<TextBlock x:Name="lblLuna" Text="--" FontSize="19" FontWeight="Bold" Foreground="{StaticResource GothPurple}" HorizontalAlignment="Center"/>
 								</StackPanel>
 							</Border>
 						</StackPanel>
 
-						<WrapPanel HorizontalAlignment="Center" Margin="0,0,0,40">
-							<Button Content="✦ Biografía" Click="BtnBiografia_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource MysticGold}" Margin="5"/>
-							<Button Content="✦ Antecedentes" Click="BtnHistopatografia_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource GothPurple}" Margin="5"/>
-							<Button Content="✧ Seguimiento" Click="BtnSeguimiento_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource BarbiePink}" Margin="5"/>
-							<Button Content="👁️ Marcas Personales" Click="BtnMarcas_Click" Style="{StaticResource BtnMystic}" Background="#4B5563" Margin="5"/>
+						<WrapPanel HorizontalAlignment="Center" Margin="0,0,0,45">
+							<Button Content="✦ Biografía" Click="BtnBiografia_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource MysticGold}" Margin="6"/>
+							<Button Content="✦ Antecedentes" Click="BtnHistopatografia_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource GothPurple}" Margin="6"/>
+							<Button Content="✧ Seguimiento" Click="BtnSeguimiento_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource BarbiePink}" Margin="6"/>
+							<Button Content="👁️ Marcas Personales" Click="BtnMarcas_Click" Style="{StaticResource BtnMystic}" Background="#4B5563" Margin="6"/>
 						</WrapPanel>
 
-						<TextBlock Text="Antecedentes" FontWeight="Bold" FontSize="24" Foreground="{StaticResource GothPurple}" Margin="0,0,0,20"/>
+						<TextBlock Text="Antecedentes" FontWeight="Bold" FontSize="25" Foreground="{StaticResource GothPurple}" Margin="0,0,0,20"/>
 						<ListView x:Name="listHistories" BorderThickness="0" Background="Transparent" Margin="0,0,0,30">
 							<ListView.ItemTemplate>
 								<DataTemplate>
 									<Border Background="#FDFCFE" BorderBrush="{StaticResource SoftLavender}" BorderThickness="1.5" CornerRadius="15" Margin="0,0,0,10" Padding="20">
 										<StackPanel>
 											<TextBlock Text="{Binding type_history}" FontWeight="Bold" FontSize="14" Foreground="{StaticResource BarbiePink}" Margin="0,0,0,5"/>
-											<TextBlock Text="{Binding history}" FontSize="15" Foreground="#374151" TextWrapping="Wrap"/>
+											<TextBlock Text="{Binding history}" FontSize="16" Foreground="#374151" TextWrapping="Wrap"/>
 										</StackPanel>
 									</Border>
 								</DataTemplate>
 							</ListView.ItemTemplate>
 						</ListView>
 
-						<TextBlock Text="Bitácora" FontWeight="Bold" FontSize="24" Foreground="{StaticResource GothPurple}" Margin="0,10,0,25"/>
+						<TextBlock Text="Bitácora" FontWeight="Bold" FontSize="25" Foreground="{StaticResource GothPurple}" Margin="0,10,0,25"/>
 						<ListView x:Name="listHistorial" BorderThickness="0" Background="Transparent">
 							<ListView.ItemTemplate>
 								<DataTemplate>
 									<Border Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="20" Margin="0,0,0,20" Padding="25">
 										<StackPanel>
-											<TextBlock Text="{Binding date, StringFormat='{}{0:dd MMMM yyyy}'}" FontWeight="Bold" FontSize="17" Foreground="{StaticResource GothPurple}" Margin="0,0,0,10"/>
-											<TextBlock Text="{Binding diagnosis_treatment}" FontSize="15" TextWrapping="Wrap" Foreground="#4B5563"/>
+											<TextBlock Text="{Binding date, StringFormat='{}{0:dd MMMM yyyy}'}" FontWeight="Bold" FontSize="18" Foreground="{StaticResource GothPurple}" Margin="0,0,0,10"/>
+											<TextBlock Text="{Binding diagnosis_treatment}" FontSize="16" TextWrapping="Wrap" Foreground="#4B5563"/>
 										</StackPanel>
 									</Border>
 								</DataTemplate>
