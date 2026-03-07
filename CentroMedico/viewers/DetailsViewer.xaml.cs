@@ -27,18 +27,6 @@ namespace CentroMedico.viewers
             txtNombrePaciente.Text = Patient.name;
             txtDatosBasicos.Text = $"📅 F. Nacim: {Patient.birthdate:dd/MM/yyyy}";
 
-            // ESTAS LÍNEAS ESTÁN COMENTADAS PARA QUE NO DEN ERROR PORQUE NO ESTÁN EN TU BASE DE DATOS TODAVÍA
-            /*
-            txtGenero.Text = $"⚧ Género: {Patient.gender}";
-            txtEstadoCivil.Text = $"💍 Estado Civil: {Patient.marital_status}";
-            txtOcupacion.Text = $"⚒️ Ocupación: {Patient.occupation}";
-            txtEscolaridad.Text = $"📚 Escolaridad: {Patient.education}";
-            txtReligion.Text = $"🕯️ Religión: {Patient.religion}";
-            lblSol.Text = Patient.sun_sign;
-            lblAsc.Text = Patient.asc_sign;
-            lblLuna.Text = Patient.moon_sign;
-            */
-
             try
             {
                 using (var db = new ConsultorioContext())
@@ -51,13 +39,26 @@ namespace CentroMedico.viewers
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al canalizar: {ex.Message}");
+                MessageBox.Show($"Error al cargar datos: {ex.Message}");
             }
         }
 
         private void BtnRegresar_Click(object sender, RoutedEventArgs e) => this.Close();
-        private void BtnBiografia_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Abriendo Biografía... ✨");
-        private void BtnMarcas_Click(object sender, RoutedEventArgs e) => MessageBox.Show("Consultando Marcas... 👁️");
+
+        private void BtnBiografia_Click(object sender, RoutedEventArgs e)
+        {
+            CreateBiography biographyWindow = new CreateBiography();
+            biographyWindow.Owner = this;
+            biographyWindow.ShowDialog();
+        }
+
+        // CORREGIDO: Ahora abre la ventana de Marcas Personales
+        private void BtnMarcas_Click(object sender, RoutedEventArgs e)
+        {
+            PersonalMarksViewer marksWindow = new PersonalMarksViewer(Patient.id);
+            marksWindow.Owner = this;
+            marksWindow.ShowDialog();
+        }
 
         private void BtnHistopatografia_Click(object sender, RoutedEventArgs e)
         {
@@ -73,7 +74,7 @@ namespace CentroMedico.viewers
             notaWindow.ShowDialog();
         }
 
-        private void BtnEditar_Click(object sender, RoutedEventArgs e) { /* Lógica de editar */ }
-        private void BtnEliminar_Click(object sender, RoutedEventArgs e) { /* Lógica de eliminar */ }
+        private void BtnEditar_Click(object sender, RoutedEventArgs e) { /* Lógica editar */ }
+        private void BtnEliminar_Click(object sender, RoutedEventArgs e) { /* Lógica eliminar */ }
     }
 }

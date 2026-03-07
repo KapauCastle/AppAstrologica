@@ -85,7 +85,6 @@
 							</Grid.ColumnDefinitions>
 							<StackPanel>
 								<TextBlock x:Name="txtNombrePaciente" Text="CARGANDO..." FontSize="38" FontWeight="Bold" Foreground="{StaticResource GothPurple}" Margin="0,0,0,15"/>
-
 								<WrapPanel>
 									<Border Style="{StaticResource DataTag}" Background="{StaticResource SoftLavender}">
 										<TextBlock x:Name="txtDatosBasicos" Text="📅 F. Nacim: --/--/--" Foreground="#6B21A8" FontSize="16" FontWeight="SemiBold"/>
@@ -110,7 +109,6 @@
 									<TextBlock x:Name="txtTipoPaciente" Visibility="Collapsed"/>
 								</WrapPanel>
 							</StackPanel>
-
 							<StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
 								<Button Style="{StaticResource BtnCircle}" Click="BtnEditar_Click">
 									<Path Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" Fill="#6B7280" Height="22" Stretch="Uniform"/>
@@ -148,7 +146,7 @@
 							<Button Content="✦ Biografía" Click="BtnBiografia_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource MysticGold}" Margin="6"/>
 							<Button Content="✦ Antecedentes" Click="BtnHistopatografia_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource GothPurple}" Margin="6"/>
 							<Button Content="✧ Seguimiento" Click="BtnSeguimiento_Click" Style="{StaticResource BtnMystic}" Background="{StaticResource BarbiePink}" Margin="6"/>
-							<Button Content="👁️ Marcas Personales" Click="BtnMarcas_Click" Style="{StaticResource BtnMystic}" Background="#4B5563" Margin="6"/>
+							<Button Content="✨ Marcas Personales" Click="BtnMarcas_Click" Style="{StaticResource BtnMystic}" Background="#4B5563" Margin="6"/>
 						</WrapPanel>
 
 						<TextBlock Text="Antecedentes" FontWeight="Bold" FontSize="25" Foreground="{StaticResource GothPurple}" Margin="0,0,0,20"/>
@@ -165,7 +163,7 @@
 							</ListView.ItemTemplate>
 						</ListView>
 
-						<TextBlock Text="Bitácora" FontWeight="Bold" FontSize="25" Foreground="{StaticResource GothPurple}" Margin="0,10,0,25"/>
+						<TextBlock Text="Bitácora de Consultas" FontWeight="Bold" FontSize="25" Foreground="{StaticResource GothPurple}" Margin="0,10,0,25"/>
 						<ListView x:Name="listHistorial" BorderThickness="0" Background="Transparent">
 							<ListView.ItemTemplate>
 								<DataTemplate>
